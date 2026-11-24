@@ -1,0 +1,152 @@
+{
+  "info": {
+    "name": "AutoService API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Crear prioritario",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/turnos",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"cliente\": \"Carlos Pérez\", \"placa\": \"ABC123\", \"vehiculo\": \"Mazda 3\", \"servicio\": \"Cambio de aceite\", \"fecha\": \"2026-12-01\", \"hora\": \"09:00\", \"precioBase\": 150000, \"prioritario\": true}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listar",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/turnos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consultar primero",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/turnos/1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Precio inválido",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/turnos",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"cliente\": \"Carlos Pérez\", \"placa\": \"ABC123\", \"vehiculo\": \"Mazda 3\", \"servicio\": \"Cambio de aceite\", \"fecha\": \"2026-12-01\", \"hora\": \"09:00\", \"precioBase\": 0, \"prioritario\": true}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "No encontrado",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/turnos/999999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sin prioridad",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/turnos",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"cliente\": \"Carlos Pérez\", \"placa\": \"ABC123\", \"vehiculo\": \"Mazda 3\", \"servicio\": \"Cambio de aceite\", \"fecha\": \"2026-12-01\", \"hora\": \"09:00\", \"precioBase\": 150000, \"prioritario\": false}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
